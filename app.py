@@ -27,10 +27,9 @@ async def chat(req: ChatRequest):
             context += f"{msg['role']}: {msg['content']}\n"
         context += f"المستخدم: {req.message}\nThe Black Box:"
 
-        url = "https://hercai.onrender.com/v3/text"
-        response = requests.post(url, json={"prompt": context}, timeout=40)
-        data = response.json()
-        reply = data.get('reply', "لم أستطع الرد.")
+        url = "https://text.pollinations.ai/"
+        response = requests.post(url, json={"messages": [{"role": "user", "content": context}], "model": "openai"}, timeout=40)
+        reply = response.text
         chat_history.append({"role": "المستخدم", "content": req.message})
         chat_history.append({"role": "The Black Box", "content": reply})
         return {"reply": reply}
